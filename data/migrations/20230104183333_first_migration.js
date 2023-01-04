@@ -28,7 +28,7 @@ exports.up = async function(knex) {
             t_table.boolean(`task_completed`)
                 .notNullable()
                 .defaultTo(false)
-            t_table.string(`project_id`)
+            t_table.integer(`project_id`)
                 .unsigned()
                 .notNullable()
                 .references(`projects`)
@@ -37,13 +37,13 @@ exports.up = async function(knex) {
         })
         .createTable(`project_resources`, ra_table => {
             ra_table.increments(`ra_id`)
-            ra_table.string(`project_id`)
+            ra_table.integer(`project_id`)
                 .unsigned()
                 .notNullable()
                 .references(`projects`)
                 .onDelete('RESTRICT')
                 .onUpdate(`RESTRICT`)
-            ra_table.string(`resource_id`)
+            ra_table.integer(`resource_id`)
                 .unsigned()
                 .notNullable()
                 .references(`projects`)
@@ -57,7 +57,7 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    await knex.schema  
+    return knex.schema  
         .dropTableIfExists(`project_resources`)
         .dropTableIfExists(`tasks`)
         .dropTableIfExists(`resources`)
