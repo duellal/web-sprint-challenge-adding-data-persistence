@@ -1,7 +1,3 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.up = async function(knex) {
     await knex.schema  
         .createTable(`projects`, p_table => {
@@ -10,7 +6,6 @@ exports.up = async function(knex) {
                 .notNullable()
             p_table.string(`project_description`)
             p_table.boolean(`project_completed`)
-                .notNullable()
                 .defaultTo(false)
             })
         .createTable(`resources`, r_table => {
@@ -26,36 +21,36 @@ exports.up = async function(knex) {
                 .notNullable()
             t_table.string(`task_notes`)
             t_table.boolean(`task_completed`)
-                .notNullable()
                 .defaultTo(false)
             t_table.integer(`project_id`)
                 .unsigned()
                 .notNullable()
-                .references(`projects`)
+                .references(`project_id`)
+                .inTable(`projects`)
                 .onDelete('RESTRICT')
                 .onUpdate(`RESTRICT`)
         })
         .createTable(`project_resources`, ra_table => {
-            ra_table.increments(`ra_id`)
+            ra_table.increments(`pr_id`)
             ra_table.integer(`project_id`)
                 .unsigned()
                 .notNullable()
-                .references(`projects`)
+                .references(`project_id`)
+                .inTable(`projects`)
                 .onDelete('RESTRICT')
                 .onUpdate(`RESTRICT`)
             ra_table.integer(`resource_id`)
                 .unsigned()
                 .notNullable()
-                .references(`projects`)
+                .references(`resource_id`)
+                .inTable(`resources`)
                 .onDelete('RESTRICT')
                 .onUpdate(`RESTRICT`)
         })
 };
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
+
+
 exports.down = function(knex) {
     return knex.schema  
         .dropTableIfExists(`project_resources`)

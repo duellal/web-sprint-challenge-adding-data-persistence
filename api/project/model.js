@@ -1,13 +1,13 @@
 const db = require(`../../data/dbConfig`)
 
-const findAll = async () => {
+const findAllProjects = async () => {
     const projects = await db(`projects`)
         .select(`*`)
 
     return projects
 }
 
-const add = async (project) => {
+const addProject = (project) => {
     return db(`projects`)
         .insert(project)
         .then(id => {
@@ -16,8 +16,7 @@ const add = async (project) => {
         .catch(err => console.log(`ERROR occurred in projects model add function`, err))
 }
 
-
 module.exports = {
-    findAll,
-    add
+    findAllProjects,
+    addProject
 }
