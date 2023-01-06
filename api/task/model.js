@@ -13,7 +13,6 @@ const addTask = (task) => {
         .then(id => {
             return db(`tasks`).where(`task_id`, id).first()
         })
-        .catch(err => console.log(`ERROR occurred in tasks model add function`, err))
 }
 
 module.exports = {
